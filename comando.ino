@@ -22,25 +22,86 @@ d120 200 gira a 120 dextrógiro durate 200 milisegundos
 l255 500 gira levógito a 255 durante 500 milisegundos
 */
 
+#include <Servo.h> 
+#include <string.h>
+
 int incomingByte = 0;
+String command = "000000000";
 
-void setup()
-{
-Serial.begin(2400);
-pinMode(13, OUTPUT);
-digitalWrite(13, LOW);
-
-}
-
-void loop()
-{
-  if (Serial.available() > 0)//capacidad de 128 bytes
+int i = 0;
+Servo myservo;  // create servo object to control a servo 
+                // a maximum of eight servo objects can be created 
+ 
+int pos = 0;    // variable to store the servo position 
+ 
+void setup() 
+{ 
+  Serial.begin(2400); //posiblemente tenga que declarar los pines 0 y 1 para que funcione sin usb
+  myservo.attach(6);  // attaches the servo on pin 9 to the servo object 
+} 
+ 
+ 
+void loop() 
+{ 
+  if (Serial.available() > 0)
   {
     incomingByte = Serial.read();
-    Serial.print("He recibido ");
-    Serial.println(incomingByte, DEC); // se puede trabajar en caracter si se usa Serial.println(char(incomingByte)); pero puede dar problemas con los espacios.
-    if (incomingByte == 32) { digitalWrite(13, HIGH); }
-    else { digitalWrite(13, LOW); }
+    command[i] = char(incomingByte);
+    i = i + 1;
+  }
+ 
+  if (command[0] == 'f')
+  {
+    Serial.print("nueva orden ");
+    Serial.println(command);
+    borra();
+  }
+
+  else if (command[0] == 'b')
+  {
+    Serial.print("nueva orden ");
+    Serial.println(command);
+    borra();
+    myservo.write(90);
+    delay(1000);
   }
   
+  else if (command[0] == 'a')
+  {
+    Serial.print("Nueva orden ");
+    Serial.println(command);
+    myservo.write(0);
+    delay(1000);
+  }
+  
+  else if(command == "000000000")
+  {
+   Serial.println("Stand by"); 
+  }
+  
+  else { borra();}
+  
+  delay(2000);
+    
+} 
+
+
+void borra()
+{
+  command = "000000000";
+  i = 0;
 }
+
+/* codigo viejo de debug
+if (incomingByte == "a")
+    {
+      myservo.write(0);             
+      delay(1000);                        
+     
+   }
+    else
+    {
+      myservo.write(90);              
+      delay(1000);
+    }
+*/
