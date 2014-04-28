@@ -2,6 +2,7 @@
 
 TODO uso de char, ojo a los espacios, interpretar las entradas con if , limitar las potencias y los tiempos 3000 milisegundos.
 
+TODO que pueda dar el estado de la batería (ojo a hacer cortos al crear el circuito) con Serial.write (pero así necesito crear un entorno de lecturar de UART desde la terminal de Raspberry
 
 equivalencia ascii
 0 es 48
