@@ -18,12 +18,13 @@ int DIR_B = 13;
 int PWM_B = 11;
 int BRAKE_B = 8;
 
-int pwm_max = 255; //-- Potencia maxima permitida a los motores 255 para 5V desde el ordenador no llegan a sustentar
+int pwm_max = 254; //-- Potencia maxima permitida a los motores 255 para 5V desde el ordenador no llegan a sustentar
 int pwm_min = 200;  //-- Potencia minima de alimentacion
+
 void setup()
 {
   Serial.begin(2400); //posiblemente tenga que declarar los pines 0 y 1 para que funcione sin usb
-   myservo.attach(6);  // attaches the servo on pin 9 to the servo object 
+  myservo.attach(6);  // attaches the servo on pin 9 to the servo object 
   pinMode(DIR_A, OUTPUT);
   pinMode(PWM_A, OUTPUT);
   pinMode(BRAKE_A, OUTPUT);
@@ -43,13 +44,45 @@ void setup()
 
 void loop()//Ascenso inicial
 {
-  for(int i = pwm_min; i <= pwm_max;i++)
-  {
-    Serial.print("Potencia en test: ");
-    Serial.println(i);
-    adiante(255);
-    agarda(100);
-  }
+ adiante(255);
+ /*agarda(5000);
+ parar();
+ agarda(1000);
+ derecha(254, HIGH);
+ agarda(5000);
+ parar();
+ agarda(1000);
+ izquierda(254, HIGH);
+ agarda(5000);
+ parar();
+ agarda(1000);
+ derecha(254, LOW);
+ agarda(5000);
+ parar();
+ agarda(1000);
+ izquierda(254, LOW);
+ agarda(5000);
+ parar();
+ agarda(1000);
+ derecha(254, LOW);
+ agarda(5000);
+ parar();
+ agarda(1000);
+ izquierda(254, HIGH);
+ agarda(5000);
+ parar();
+ agarda(1000);
+ derecha(254, HIGH);
+ agarda(5000);
+ parar();
+ agarda(1000);
+ izquierda(254, LOW);
+ agarda(5000);
+ parar();
+ agarda(1000);*/
+
+ 
+  
 }
 
 
@@ -59,24 +92,24 @@ void agarda(int milisegundos)
   parar();
 }
 
-void derecha(int potencia)
+void derecha(int potencia, int dir)
 {
   digitalWrite(BRAKE_A, LOW);
-  digitalWrite(DIR_A, LOW);
+  digitalWrite(DIR_A, dir);
   analogWrite(PWM_A, potencia);
 }
 
-void izquierda(int potencia)
+void izquierda(int potencia, int dir)
 {
   digitalWrite(BRAKE_B, LOW);
-  digitalWrite(DIR_B, LOW);
+  digitalWrite(DIR_B, dir);
   analogWrite(PWM_B, potencia);
 }
 
 void adiante(int potencia) // Se llega a potencia en cuatro pasos, un segundo
 {
-  derecha(potencia);
-  izquierda(potencia);
+  derecha(potencia, LOW);
+  izquierda(potencia, LOW);
 }
 void parar() // Parada controlada 
 {
@@ -91,7 +124,7 @@ void atras(int potencia)// Se llega a potencia en cuatro pasos, un segundo
   digitalWrite(DIR_A, HIGH);
   digitalWrite(BRAKE_B, LOW);
   digitalWrite(DIR_B, HIGH);
-  analogWrite(PWM_B, potencia);
+  analogWrite(PWM_A, potencia);
   analogWrite(PWM_B, potencia);
 }
     
