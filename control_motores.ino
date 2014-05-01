@@ -45,7 +45,7 @@ void setup()
 void loop()//Ascenso inicial
 {
  adiante(255);
- /*agarda(5000);
+ agarda(5000);
  parar();
  agarda(1000);
  derecha(254, HIGH);
@@ -79,7 +79,7 @@ void loop()//Ascenso inicial
  izquierda(254, LOW);
  agarda(5000);
  parar();
- agarda(1000);*/
+ agarda(1000);
 
  
   
